@@ -1,5 +1,6 @@
 ---
 title: Hello Hexo
+date: "2020-03-02"
 ---
 
 ![Test](https://cn.bing.com/th?id=OHR.SaguaroLightning_ZH-CN4157442270_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp)

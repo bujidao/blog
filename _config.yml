@@ -108,5 +108,5 @@ theme: next
 
 deploy:
   type: git
-  repo: git@github.com:bujidao/blog.git
+  repo: git@github.com:bujidao/bujidao.github.io.git
   branch: master
