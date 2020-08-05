@@ -1,0 +1,83 @@
+if (hexo-config('darkmode')) {
+  
+  ::selection {
+    background-color: #fff159;
+    color: #555;
+  }
+  // mixin header and menu style
+  .header-inner {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    .site-title {
+      font-size: 32px;
+      color: #fff;
+      background: transparent;
+    }
+    .site-subtitle {
+      font-size: 14px;
+      color: #fff;
+      margin: 0;
+    }
+    .site-nav {
+      .menu {
+        margin: 0;
+        background: rgba(255, 255, 255, .75);
+        padding: 5px;
+        box-shadow: 0 10px 10px 0 rgba(0,0,0,.15);
+        a {
+          color: #222;
+        }
+      }
+    }
+    .menu-item-active a, .menu .menu-item a:hover, .menu .menu-item span.exturl:hover {
+      background: transparent;
+      border-bottom: 1px solid #222 !important;
+    }
+  }
+
+  .content {
+    padding-top:20px;
+  }
+  .post-block {
+    margin-bottom: 20px;
+    padding: 45px 36px 36px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.5);
+    background-color: #fff;
+    .post-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #555;
+      a{
+        color: #555;
+      }
+    }
+    .post-body {
+      color: #000;
+      font-family: linux biolinum,'noto serif sc',sans-serif;
+      blockquote {
+        color: #666;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        margin: 20px 0 15px;
+        padding: 0;
+        font-weight: 700;
+        line-height: 1.5;
+        font-family: 'noto serif sc',linux biolinum,'noto serif sc',sans-serif;
+      }
+      h1 {
+        font-size: 22px;
+      }
+    }
+    .post-footer {
+      .post-nav-item a {
+        color: #5073b8;
+      }
+    }
+  }
+  .posts-expand .post-title-link::before {
+    background: linear-gradient(90deg,#a166ab 0,#ef4e7b 25%,#f37055 50%,#ef4e7b 75%,#a166ab 100%);
+  }
+
+
+}
