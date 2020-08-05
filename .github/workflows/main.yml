@@ -7,17 +7,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Blog Branche
-        uses: actions/checkout@v2
+      - name: Checkout source
+        uses: actions/checkout@v1
         with: 
-          ref: blog
+          ref: hexo
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v1
         with:
           version: ${{ matrix.node_version }}
       - name: Set Git Config
         env:
-          ACTION_DEPLOY_KEY: ${{ secrets.ACTION_DEPLOY_KEY_BLOG }}
+          ACTION_DEPLOY_KEY: ${{ secrets.ACTION_DEPLOY_KEY_BLOG_PRI }}
         run: |
           mkdir -p ~/.ssh/
           echo "$ACTION_DEPLOY_KEY" | tr -d '\r' > ~/.ssh/id_rsa
