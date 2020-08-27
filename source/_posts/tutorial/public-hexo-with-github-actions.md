@@ -1,7 +1,12 @@
-
 ---
-title: "Hexo通过GitHub Actions持续集成发布"
-date: "2020-03-02"
+title: Hexo通过GitHub Actions持续集成发布
+date: 2017-10-13 14:52:41
+categories:
+  - [教程, hexo]
+  - [教程, github]
+tags:
+  - hexo
+  - github
 ---
 
 Hexo博客源文件,通过GitHub Action自动发布推送
