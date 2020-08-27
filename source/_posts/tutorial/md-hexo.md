@@ -205,3 +205,29 @@ Markdown 制作表格使用 | 来分隔不同的单元格，使用 - 来分隔�
 使用 <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd> 重启电脑
 ```
 使用 <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd> 重启电脑
+
+### Note
+
+{% note default %}
+default 提示块标签
+{% endnote %}
+
+{% note primary %}
+primary 提示块标签
+{% endnote %}
+
+{% note success %}
+success 提示块标签
+{% endnote %}
+
+{% note info %}
+info 提示块标签
+{% endnote %}
+
+{% note warning %}
+warning 提示块标签
+{% endnote %}
+
+{% note danger %}
+danger 提示块标签
+{% endnote %}

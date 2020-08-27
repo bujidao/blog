@@ -1,6 +1,7 @@
 ---
-title: 在vscode中自动编译并debug Typescript代码
+title: 在vscode中自动编译并debug调试Typescript代码
 date: 2020-05-25 13:48:44
+description: asdfasdfasdf
 categories:
   - [Typescript, vscode插件]
 tags:
@@ -58,5 +59,14 @@ tsc --init
 `exclude`: 排除的目录
 
 ### 自动编译ts
-做好上面的工作以后， 在键盘上同时按下`ctrl` + `shift` + `b`， 即可弹出ts的编辑选项， 选择`watch`即可实时监控你的`ts`代码， 并转编译为`js`
+做好上面的工作以后， 在键盘上同时按下<kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>b</kbd>， 即可弹出ts的编辑选项， 选择`watch`即可实时监控你的`ts`代码， 并转编译为`js`, 然后在你的页面中引入这个js文件即可
 {% asset_img watch-ts-to-js.png Watch TS %}
+
+## Debug调试
+
+1. 点开调试
+2. 点击debug
+3. 选中node.js
+
+{% asset_img ts-debug.png 调试ts步骤 %}
+{% asset_img ts-debug2.png 调试ts界面 %}

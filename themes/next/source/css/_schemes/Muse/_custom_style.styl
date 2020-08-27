@@ -116,8 +116,10 @@ if (hexo-config('darkmode')) {
       img{
         transition: all .5s ease;
         box-shadow: 0 0 5px #aaa;
-        &:hover {
-          box-shadow: 0 0 20px #aaa;
+        &.post-image {
+          &:hover {
+            box-shadow: 0 0 20px #aaa;
+          }
         }
       }
       a {
@@ -216,6 +218,11 @@ if (hexo-config('darkmode')) {
   }
   .post-block .post-body {
     color: #4a4a4a;
+  }
+  .tag-cloud-tags {
+    a {
+      color: #f74f9e !important;
+    }
   }
 
 }
