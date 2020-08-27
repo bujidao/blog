@@ -24,9 +24,9 @@ jobs:
           git config --global user.email 'izengjing.cn@gmail.com'
       - name: Install Hexo
         run: |
-          yarn i -g hexo-cli 
-          yarn i
-          yarn install hexo-deployer-git --save
+          npm i -g hexo-cli 
+          npm i
+          npm install hexo-deployer-git --save
       - name: Deploy Hexo
         run: |
           hexo g -d
