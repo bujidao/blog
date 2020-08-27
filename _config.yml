@@ -108,7 +108,7 @@ theme: next
 
 deploy:
   type: git
-  repo: git@github.com:bujidao/bujidao.github.io.git
+  repo: git@github.com:bujidao/blog.git
   branch: master
 
 live2d:

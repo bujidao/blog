@@ -1,23 +1,20 @@
 name: CI
-on:
-  push:
-    branches:
-      - hexo
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v1
+      - name: Checkout Blog Branche
+        uses: actions/checkout@v2
         with: 
-          ref: hexo
-      - name: Use Node.js ${{ matrix.node_version }}
+          ref: blog
+      - name: Install Node.js 12
         uses: actions/setup-node@v1
         with:
-          version: ${{ matrix.node_version }}
+          node-version: 12.x
       - name: Set Git Config
         env:
-          ACTION_DEPLOY_KEY: ${{ secrets.ACTION_DEPLOY_KEY_BLOG_PRI }}
+          ACTION_DEPLOY_KEY: ${{ secrets.ACTION_DEPLOY_KEY_BLOG }}
         run: |
           mkdir -p ~/.ssh/
           echo "$ACTION_DEPLOY_KEY" | tr -d '\r' > ~/.ssh/id_rsa
@@ -27,9 +24,9 @@ jobs:
           git config --global user.email 'izengjing.cn@gmail.com'
       - name: Install Hexo
         run: |
-          npm install hexo-cli -g
-          npm install
-      - name: Hexo deploy
+          yarn i -g hexo-cli 
+          yarn i
+          yarn install hexo-deployer-git --save
+      - name: Deploy Hexo
         run: |
-          hexo clean
-          hexo d
+          hexo g -d

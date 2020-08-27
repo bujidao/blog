@@ -2,8 +2,6 @@
 ---
 title: "Hexo通过GitHub Actions持续集成发布"
 date: "2020-03-02"
-draft: false
-publishdate: "2020-03-03"
 ---
 
 Hexo博客源文件,通过GitHub Action自动发布推送
@@ -53,6 +51,7 @@ id_rsa.pub  公钥
 点击**Add a new secret**新增一个私钥
 私钥的Name:  *ACTION_DEPLOY_KEY_BLOG*（可以自由命名）
 私钥的Value: 用记事本打开刚才本地git生成**id_rsa**，然后复制进来就可以
+
 {% asset_img settings-secrets.png 设置私钥%}
 
 #### 设置github repo的公钥
