@@ -1,7 +1,6 @@
 ---
 title: 在vscode中自动编译并debug调试Typescript代码
 date: 2020-05-25 13:48:44
-description: asdfasdfasdf
 categories:
   - [Typescript, vscode插件]
 tags:
