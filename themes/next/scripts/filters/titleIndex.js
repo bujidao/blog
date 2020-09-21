@@ -2,11 +2,11 @@
 
 'use strict'
 
-let cheerio
-
 hexo.extend.filter.register(
   'after_post_render',
   (data) => {
+
+    let cheerio = ''
     if (!cheerio) cheerio = require('cheerio')
 
     const $ = cheerio.load(data.content, {
@@ -45,34 +45,55 @@ hexo.extend.filter.register(
         }
         case 'h2': {
           h3index = 1
-          h2 = h1 + '.' + h2index
+          if (h1) {
+            h2 = h1 + '.' + h2index
+          } else {
+            h2 = h2index
+          }
           h2index++
           hindexString = h2
           break
         }
         case 'h3': {
           h4index = 1
-          h3 = h2 + '.' + h3index
+          if (h2) {
+            h3 = h2 + '.' + h3index
+          } else {
+            h3 = h3index
+          }
           h3index++
           hindexString = h3
           break
         }
         case 'h4': {
           h5index = 1
-          h4 = h3 + '.' + h4index
+          if (h3) {
+            h4 = h3 + '.' + h4index
+          } else {
+            h4 = h4index
+          }
           h4index++
           hindexString = h4
           break
         }
         case 'h5': {
           h6index = 1
-          h5 = h4 + '.' + h5index
+          if (h4) {
+            h5 = h4 + '.' + h5index
+          } else {
+            h5 = h5index
+          }
           h5index++
           hindexString = h5
           break
         }
         case 'h6': {
-          h6 = h5 + '.' + h6index
+          if (h5) {
+            h6 = h5 + '.' + h6index
+          } else {
+            h6 = h6index
+          }
+          
           h6index++
           hindexString = h6
           break
