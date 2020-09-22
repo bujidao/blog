@@ -12,6 +12,11 @@ tags:
 
 <!-- more -->
 
+## 启动
+```
+hexo server -w
+```
+
 ## 标题
 Markdown 标题有两种格式。
 
