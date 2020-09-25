@@ -4,7 +4,8 @@ date: 2019/5/10 20:46:25
 categories:
   - [Vue]
 tags:
-  - Vue, 多API服务地址
+  - Vue
+  - 多API服务地址
 ---
 {% asset_img api.jpg %}
 > 关于在vue-cli框架下，多api服务地址的运用
