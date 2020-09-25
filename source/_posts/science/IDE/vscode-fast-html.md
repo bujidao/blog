@@ -6,7 +6,7 @@ tags:
   - vscode
   - html
 category:
-  - fase ide
+  - fast ide
   - vscode
 ---
 
