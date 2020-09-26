@@ -87,10 +87,11 @@ ___粗斜体文本___
 ~~BAIDU.COM~~
 
 ### 下划线
-下划线可以通过 HTML 的 <u\> 标签来实现：
-``` bash
-# <u>带下划线文本</u>
-```
+下划线可以通过 HTML 的 `u` 标签来实现：
+
+{% codeblock lang:html %}
+<u>带下划线文本</u>
+{% endcodeblock %}
 <u>带下划线文本</u>
 
 ### 脚注
@@ -183,9 +184,9 @@ Markdown 区块引用是在段落开头使用 > 符号 ，然后后面紧跟一�
 ### 代码区块
 代码区块使用 4 个空格或者一个制表符（Tab 键）。
 ```bash
-    console.log('hello markdown')
+console.log('hello markdown')
 ```
-    console.log('hello markdown')
+console.log('hello markdown')
 
 ## 链接
 
