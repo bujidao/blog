@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const shell = require('gulp-shell');
 const yaml = require('js-yaml');
+const imagemin = require('gulp-imagemin');
 
 gulp.task('lint', () => gulp.src([
   './source/js/**/*.js',
@@ -45,4 +46,22 @@ gulp.task('validate:languages', cb => {
   return errors.length === 0 ? cb() : cb(errors);
 });
 
-gulp.task('default', gulp.series('lint', 'validate:config', 'validate:languages'));
+//图片压缩
+gulp.task('images', function() {
+  gulp.src(
+    './source/**/*.jpg',
+    './source/**/*.png'
+    ).pipe(imagemin([
+      imagemin.gifsicle({interlaced: true}),
+      imagemin.jpegtran({progressive: true}),
+      imagemin.optipng({optimizationLevel: 5}),
+      imagemin.svgo({
+          plugins: [
+              {removeViewBox: true},
+              {cleanupIDs: false}
+          ]
+      })
+    ]));
+});
+
+gulp.task('default', gulp.series('lint', 'validate:config', 'validate:languages', 'images'));
