@@ -5,7 +5,6 @@ categories:
 tags:
   - Typescript
 date: 2020/7/13 20:46:25
-top: true
 ---
 
 {% asset_img ts.png TypeScript %}
