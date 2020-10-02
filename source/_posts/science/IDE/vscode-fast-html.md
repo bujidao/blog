@@ -140,3 +140,23 @@ ul#wrapper>li.item.item2[type={$$}]{item$$}*10
   <li class="item item2" type="10">item10</li>
 </ul>
 ```
+
+``` html
+ul>li([data-src={datasrc$$}][name={name$$}]>a[href={link$$}]{条目$$})*10
+```
+
+``` html
+<ul>
+    <li></li>
+    <li data-src="datasrc01" name="name01"><a href="link01">条目01</a></li>
+    <li data-src="datasrc02" name="name02"><a href="link02">条目02</a></li>
+    <li data-src="datasrc03" name="name03"><a href="link03">条目03</a></li>
+    <li data-src="datasrc04" name="name04"><a href="link04">条目04</a></li>
+    <li data-src="datasrc05" name="name05"><a href="link05">条目05</a></li>
+    <li data-src="datasrc06" name="name06"><a href="link06">条目06</a></li>
+    <li data-src="datasrc07" name="name07"><a href="link07">条目07</a></li>
+    <li data-src="datasrc08" name="name08"><a href="link08">条目08</a></li>
+    <li data-src="datasrc09" name="name09"><a href="link09">条目09</a></li>
+    <li data-src="datasrc10" name="name10"><a href="link10">条目10</a></li>
+  </ul>
+```
