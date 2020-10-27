@@ -19,6 +19,11 @@ description: 收藏各种有意思的站点
 
 * [python爬虫](https://python3webspider.cuiqingcai.com)
 
+## javascript
+
+
+* [js在线算法练习](https://www.lintcode.com/)
+
 # 综合工具类
 
 ## 技术
@@ -26,3 +31,6 @@ description: 收藏各种有意思的站点
 * [SSL在线工具](https://www.ssleye.com/)
 * [爱资料](http://www.toolnb.com/)
 
+# 个人博客类
+
+* [数据可视化设计师](https://wangyasai.github.io/)
