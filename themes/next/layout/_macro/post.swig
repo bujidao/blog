@@ -1,7 +1,7 @@
   {##################}
   {### POST BLOCK ###}
   {##################}
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="{{ post.lang or config.language }}">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home-post-item" lang="{{ post.lang or config.language }}">
     <link itemprop="mainEntityOfPage" href="{{ post.permalink }}">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -179,7 +179,7 @@
       {%- if post.photos and post.photos.length %}
         <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
           {%- for photo in post.photos %}
-            <img src="{{ url_for(photo) }}" itemprop="contentUrl">
+            <div class="cover"><img src="{{ url_for(photo) }}" itemprop="contentUrl"></div>
           {%- endfor %}
         </div>
       {%- endif %}
