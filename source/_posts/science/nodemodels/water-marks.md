@@ -1,5 +1,6 @@
 ---
 title: 'nodejs利用images为图片添加水印'
+date: 2020-09-22 13:38:37
 category:
   - ['nodejs', 'images']
 tags:
