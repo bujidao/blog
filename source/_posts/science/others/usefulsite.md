@@ -37,6 +37,7 @@ top: true
 * [Ascii字符画](http://www.network-science.de/ascii/)
 * [跨浏览器-属性支持](https://caniuse.com/)
 * [图片压缩](https://www.iloveimg.com/zh-cn)
+* [在线图床](https://imgchr.com)
 
 ## 软件
 
@@ -45,4 +46,3 @@ top: true
 # 个人博客类
 
 * [数据可视化设计师](https://wangyasai.github.io/)
-
