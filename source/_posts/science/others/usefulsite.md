@@ -14,21 +14,36 @@ top: true
 
 # 教程技术类
 
+## CSS
+
+* [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/)
+* [25个使用网站](https://www.jianshu.com/p/6b1726cbfbdd)
+
+### 在线编辑
+
+* [新拟态在线生成](https://neumorphism.io/#e0e0e0)
+* [阴影](http://tools.jb51.net/aideddesign/css3_boxshadow)
+
 ## Python
 
 * [python爬虫](https://python3webspider.cuiqingcai.com)
-* [深入浅出 Webpack](http://webpack.wuhaolin.cn/)
 
 ## JavaScript
 
 * [js在线算法练习](https://www.lintcode.com/)
 * [js题库练习-牛客](https://www.nowcoder.com/)
+* [深入浅出 Webpack](http://webpack.wuhaolin.cn/)
 
 ## IDE
 
 * [Emmet-快速生成html](https://docs.emmet.io/)
 
 # 综合工具类
+
+## 综合在线工具
+
+* [jb51 超多在线工具](http://tools.jb51.net/)
+* [oschina 超多在线工具](https://tool.oschina.net/)
 
 ## 技术
 
@@ -44,13 +59,18 @@ top: true
 
 * `TeleportUltra`: 整站下载
 * `公考照片处理工具`：[官网指定下载](http://202.61.89.231/download.html)
+* `KMS激活WIN平台`：[网站](https://www.moerats.com/kms/)
+
+## 文娱
+
+* [视频网站集合](http://www.549.tv/)
 
 # 个人博客类
 
 * [数据可视化设计师](https://wangyasai.github.io/)
 * [panjiachen awesome-bookmarks](https://panjiachen.github.io/awesome-bookmarks/)
 
-# 网络大神合集
+# 个人收集的网络大神合集
 
 ## 书籍
 
@@ -60,3 +80,8 @@ top: true
 ## 博客
 
 * [awesome-bookmarks](https://bujidao.github.io/awesome-bookmarks/)
+
+# 酷站
+
+
+> 记录平时收集的一些好看、好玩、有用的网站
