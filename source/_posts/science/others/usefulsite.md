@@ -17,6 +17,7 @@ top: true
 ## Python
 
 * [python爬虫](https://python3webspider.cuiqingcai.com)
+* [深入浅出 Webpack](http://webpack.wuhaolin.cn/)
 
 ## JavaScript
 
@@ -46,3 +47,4 @@ top: true
 # 个人博客类
 
 * [数据可视化设计师](https://wangyasai.github.io/)
+* [panjiachen awesome-bookmarks](https://panjiachen.github.io/awesome-bookmarks/)
