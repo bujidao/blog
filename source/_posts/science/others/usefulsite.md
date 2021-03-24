@@ -43,6 +43,7 @@ top: true
 ## 软件
 
 * `TeleportUltra`: 整站下载
+* `公考照片处理工具`：[官网指定下载](http://202.61.89.231/download.html)
 
 # 个人博客类
 
