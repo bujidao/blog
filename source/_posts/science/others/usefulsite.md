@@ -49,8 +49,13 @@ top: true
 * [数据可视化设计师](https://wangyasai.github.io/)
 * [panjiachen awesome-bookmarks](https://panjiachen.github.io/awesome-bookmarks/)
 
-# My Github Blogs
+# 网络大神合集
+
+## 书籍
 
 * [blog](https://bujidao.github.io/blog/)
+* [深入浅出webpack](https://bujidao.github.io/dive-into-webpack/)
+
+## 博客
+
 * [awesome-bookmarks](https://bujidao.github.io/awesome-bookmarks/)
-* 
