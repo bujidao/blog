@@ -46,11 +46,14 @@ top: true
 * [jb51 超多在线工具](http://tools.jb51.net/)
 * [oschina 超多在线工具](https://tool.oschina.net/)
 * [文档格式转换alltoall](https://www.alltoall.net/)
+* [UI颜色布料](https://www.materialui.co/colors)
+* [logo在线制作](http://www.logofree.cn/)
 
 ## 技术
 
-* [SSL在线工具](https://www.ssleye.com/)
-* [爱资料](http://www.toolnb.com/)
+* SSL在线工具[https://www.ssleye.com/](https://www.ssleye.com/)
+* 爱资料[http://www.toolnb.com/](http://www.toolnb.com/)
+* 在线工具[https://tool.lu/c/developer](https://tool.lu/c/developer)
 * [pixelmap-在线地图编辑器](https://pixelmap.amcharts.com/#)
 * [Ascii字符画](http://www.network-science.de/ascii/)
 * [跨浏览器-属性支持](https://caniuse.com/)
