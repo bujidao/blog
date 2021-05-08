@@ -16,9 +16,9 @@ top: true
 
 ## CSS
 
-* [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/)
-* [25个使用网站](https://www.jianshu.com/p/6b1726cbfbdd)
-* [css兼容性查看(can i use)](https://caniuse.com/)
+* [【You-need-to-know-css】css灵感](https://lhammer.cn/You-need-to-know-css/#/)
+* [25个实用网站](https://www.jianshu.com/p/6b1726cbfbdd)
+* [【can i use】css兼容性查看](https://caniuse.com/)
 
 ### 在线编辑
 
@@ -28,7 +28,7 @@ top: true
 
 ## Python
 
-* [python爬虫](https://python3webspider.cuiqingcai.com)
+* [【python3webspider】python爬虫](https://python3webspider.cuiqingcai.com)
 
 ## JavaScript
 
@@ -49,6 +49,7 @@ top: true
 * [文档格式转换alltoall](https://www.alltoall.net/)
 * [UI颜色布料](https://www.materialui.co/colors)
 * [logo在线制作](http://www.logofree.cn/)
+* [毛玻璃效果生成器](https://glassmorphism.com/)
 
 ## 技术
 
@@ -80,6 +81,7 @@ top: true
 * [数据可视化设计师](https://wangyasai.github.io/)
 * [panjiachen awesome-bookmarks](https://panjiachen.github.io/awesome-bookmarks/)
 * [html5iq](https://www.html5iq.com/)
+* [普通学习](https://zxuqian.cn/)
 
 # 个人收集的网络大神合集
 
