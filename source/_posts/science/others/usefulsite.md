@@ -14,53 +14,44 @@ top: true
 
 # 教程技术类
 
-## CSS
+## 前端
 
-* [【You-need-to-know-css】css灵感](https://lhammer.cn/You-need-to-know-css/#/)
+* [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/)提供了很多css的灵感的网站
 * [25个实用网站](https://www.jianshu.com/p/6b1726cbfbdd)
-* [【can i use】css兼容性查看](https://caniuse.com/)
-
-### 在线编辑
-
-* [新拟态在线生成](https://neumorphism.io/#e0e0e0)
-* [阴影](http://tools.jb51.net/aideddesign/css3_boxshadow)
-* [在线可视化编辑css](https://enjoycss.com/)
+* [caniuse](https://caniuse.com/)查看css属性的兼容性
+* [lintcode](https://www.lintcode.com/)js在线算法练习
+* [nowcoder](https://www.nowcoder.com/)js题库练习-牛客
+* [wuhaolin](http://webpack.wuhaolin.cn/)深入浅出 Webpack
+* [glassmorphism](https://glassmorphism.com/)毛玻璃效果生成器
+* [neumorphism](https://neumorphism.io/#e0e0e0)在线调试并生成新拟态风格
+* [box-shadow阴影](http://tools.jb51.net/aideddesign/css3_boxshadow)在线调试box-shadow并生成阴影的代码
+* [pixelmap.amcharts](https://pixelmap.amcharts.com/#)pixelmap-在线地图编辑器
+* [network-science](http://www.network-science.de/ascii/)Ascii字符画
+* [iloveimg](https://www.iloveimg.com/zh-cn)图片压缩
+* [enjoycss](https://enjoycss.com/)在线可视化编辑css
+* [imgchr](https://imgchr.com)在线图床
 
 ## Python
 
-* [【python3webspider】python爬虫](https://python3webspider.cuiqingcai.com)
-
-## JavaScript
-
-* [js在线算法练习](https://www.lintcode.com/)
-* [js题库练习-牛客](https://www.nowcoder.com/)
-* [深入浅出 Webpack](http://webpack.wuhaolin.cn/)
+* [python3webspider](https://python3webspider.cuiqingcai.com)非常好的一个关于学习python爬虫的网站
 
 ## IDE
 
-* [Emmet-快速生成html](https://docs.emmet.io/)
+* [Emmet](https://docs.emmet.io/)快速生成html
 
-# 综合工具类
+## UI
+
+* [logofree](http://www.logofree.cn/)可以在线制作logo，提供制作logo的灵感
+* [materialui](https://www.materialui.co/colors)UI颜色布料
 
 ## 综合在线工具
 
-* [jb51 超多在线工具](http://tools.jb51.net/)
-* [oschina 超多在线工具](https://tool.oschina.net/)
-* [文档格式转换alltoall](https://www.alltoall.net/)
-* [UI颜色布料](https://www.materialui.co/colors)
-* [logo在线制作](http://www.logofree.cn/)
-* [毛玻璃效果生成器](https://glassmorphism.com/)
-
-## 技术
-
-* SSL在线工具[https://www.ssleye.com/](https://www.ssleye.com/)
-* 爱资料[http://www.toolnb.com/](http://www.toolnb.com/)
-* 在线工具[https://tool.lu/c/developer](https://tool.lu/c/developer)
-* [pixelmap-在线地图编辑器](https://pixelmap.amcharts.com/#)
-* [Ascii字符画](http://www.network-science.de/ascii/)
-* [跨浏览器-属性支持](https://caniuse.com/)
-* [图片压缩](https://www.iloveimg.com/zh-cn)
-* [在线图床](https://imgchr.com)
+* [tools.jb51](http://tools.jb51.net/)jb51 超多在线工具
+* [tool.oschina](https://tool.oschina.net/)oschina 超多在线工具
+* [alltoall](https://www.alltoall.net/)文档格式转换
+* [https://www.ssleye.com/](https://www.ssleye.com/)SSL在线工具
+* [toolnb](http://www.toolnb.com/)超多在线实用工具
+* [https://tool.lu/c/developer](https://tool.lu/c/developer)在线工具
 
 ## 软件
 
@@ -70,7 +61,7 @@ top: true
 
 ## 文娱
 
-* [视频网站集合](http://www.549.tv/)
+* [549.tv](http://www.549.tv/)视频网站集合
 
 ## 关键字
 
