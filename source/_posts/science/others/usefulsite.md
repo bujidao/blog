@@ -8,7 +8,7 @@ categories:
 top: true
 ---
 
-{% asset_img website.jpg %}
+{% asset_img files.jpg %}
 
 <!-- more -->
 
