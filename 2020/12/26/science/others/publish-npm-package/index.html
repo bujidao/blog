@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bujidao.github.io","root":"/blog/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="【亲测】在Npm上发布自己的npm包">
+<meta property="og:url" content="https://bujidao.github.io/blog/2020/12/26/science/others/publish-npm-package/index.html">
+<meta property="og:site_name" content="Bujidao&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bujidao.github.io/blog/2020/12/26/science/others/publish-npm-package/logo.png">
+<meta property="article:published_time" content="2020-12-26T15:25:41.000Z">
+<meta property="article:modified_time" content="2021-06-03T04:08:21.746Z">
+<meta property="article:author" content="Alex ceng">
+<meta property="article:tag" content="webpack">
+<meta property="article:tag" content="npm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bujidao.github.io/blog/2020/12/26/science/others/publish-npm-package/logo.png">
+
+<link rel="canonical" href="https://bujidao.github.io/blog/2020/12/26/science/others/publish-npm-package/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>【亲测】在Npm上发布自己的npm包 | Bujidao's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Bujidao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">安装、教程及经验分享</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bujidao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home-post-item" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bujidao.github.io/blog/2020/12/26/science/others/publish-npm-package/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.gif?imageView2/1/w/80/h/80">
+      <meta itemprop="name" content="Alex ceng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bujidao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【亲测】在Npm上发布自己的npm包
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-26 15:25:41" itemprop="dateCreated datePublished" datetime="2020-12-26T15:25:41+00:00">2020-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-03 04:08:21" itemprop="dateModified" datetime="2021-06-03T04:08:21+00:00">2021-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/webpack/" itemprop="url" rel="index"><span itemprop="name">webpack</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/webpack/npm/" itemprop="url" rel="index"><span itemprop="name">npm</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <html><head></head><body><img data-src="/blog/2020/12/26/science/others/publish-npm-package/logo.png" class="">
+
+<span id="more"></span>
+
+<h2 id="安装"><span class="post-title-index">1. </span><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="一、准备工作"><span class="post-title-index">1.1. </span><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h3><p>在正式开始演示前，我们还需要做两项准备工作：</p>
+<h4 id="注册npm账户"><span class="post-title-index">1.1.1. </span><a href="#注册npm账户" class="headerlink" title="注册npm账户"></a>注册npm账户</h4><ul>
+<li>全名：</li>
+<li>邮箱：</li>
+<li>用户名：<code>重要！发布scoped包时会用到</code></li>
+<li>密码：</li>
+</ul>
+<h4 id="全局安装nrm"><span class="post-title-index">1.1.2. </span><a href="#全局安装nrm" class="headerlink" title="全局安装nrm"></a>全局安装nrm</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i nrm -g</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>nrm</code>是npm仓库管理的软件，可用于npm仓库的快速切换</p>
+<p><code>nrm</code> 常用命令：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nrm //展示nrm可用命令</span><br><span class="line">nrm ls //列出已经配置的所有仓库</span><br><span class="line">nrm <span class="built_in">test</span> //测试所有仓库的响应时间</span><br><span class="line">nrm add &lt;registry&gt; &lt;url&gt; //新增仓库</span><br><span class="line">nrm use &lt;registry&gt; //切换仓库</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="二、发布包"><span class="post-title-index">1.2. </span><a href="#二、发布包" class="headerlink" title="二、发布包"></a>二、发布包</h3><p>开始演示前做两个简短说明：</p>
+<p>（1）npm官方建议规范的包，<strong>至少</strong>包含：</p>
+<ul>
+<li>package.json（包的基本信息）</li>
+<li>README.m d（文档）</li>
+<li>index.js （入口文件）</li>
+</ul>
+<p>后续的演示都遵循此规范</p>
+<p>（2）本次仅演示个人账户的包发布，包括一个unscoped包和一个scoped的包。团体账户下的包发布流程和个人账户差别不大，在此不做展开。</p>
+<h4 id="发布unscoped包"><span class="post-title-index">1.2.1. </span><a href="#发布unscoped包" class="headerlink" title="发布unscoped包"></a>发布unscoped包</h4><p><code>pks-cli</code></p>
+<h5 id="第一步：创建项目"><span class="post-title-index">1.2.1.1. </span><a href="#第一步：创建项目" class="headerlink" title="第一步：创建项目"></a>第一步：创建项目</h5><p><strong>（1）创建工程文件夹</strong></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir yuyy-test-pkg &amp;&amp; <span class="built_in">cd</span> yuyy-test-pkg</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>（2）创建package.json </strong></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"pks-cli"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"packageing script(ts/js) together and used in html"</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"src/index.ts"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"MIT"</span>,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"AlexCeng &lt;izengjing.cn@gmail.com&gt;"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: {</span><br><span class="line">    <span class="string">"dev"</span>: <span class="string">"webpack --watch --progress --config build/webpack.dev.js"</span>,</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"webpack --config build/webpack.prod.js"</span></span><br><span class="line">  },</span><br><span class="line">  <span class="string">"keywords"</span>: [</span><br><span class="line">    <span class="string">"webpack"</span>,</span><br><span class="line">    <span class="string">"typescript"</span>,</span><br><span class="line">    <span class="string">"javascript"</span>,</span><br><span class="line">    <span class="string">"html"</span>,</span><br><span class="line">    <span class="string">"package"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"dependencies"</span>: {},</span><br><span class="line">  <span class="string">"devDependencies"</span>: {</span><br><span class="line">    <span class="string">"@types/node"</span>: <span class="string">"^14.14.16"</span>,</span><br><span class="line">    <span class="string">"clean-webpack-plugin"</span>: <span class="string">"^3.0.0"</span>,</span><br><span class="line">    <span class="string">"html-webpack-plugin"</span>: <span class="string">"^4.5.0"</span>,</span><br><span class="line">    <span class="string">"lodash"</span>: <span class="string">"^4.17.20"</span>,</span><br><span class="line">    <span class="string">"ts-loader"</span>: <span class="string">"^8.0.12"</span>,</span><br><span class="line">    <span class="string">"typescript"</span>: <span class="string">"^4.1.3"</span>,</span><br><span class="line">    <span class="string">"webpack"</span>: <span class="string">"^5.11.0"</span>,</span><br><span class="line">    <span class="string">"webpack-cli"</span>: <span class="string">"^4.2.0"</span>,</span><br><span class="line">    <span class="string">"webpack-dev-server"</span>: <span class="string">"^3.11.0"</span>,</span><br><span class="line">    <span class="string">"webpack-merge"</span>: <span class="string">"^5.7.2"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>（3）创建README.md</strong></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">&lt;p align=<span class="string">"center"</span>&gt;</span><br><span class="line">  &lt;h1&gt;Docs&lt;/h1&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p align=<span class="string">"center"</span>&gt;</span><br><span class="line">  &lt;img src=<span class="string">"./pks-logo.png"</span> height=<span class="string">"200px"</span> /&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">  [English](./README.zh-CN.md) | 简体中文</span><br><span class="line"></span><br><span class="line">  [![NPM Version][npm-image]][npm-url]</span><br><span class="line">  [![NPM Downloads][downloads-image]][downloads-url]</span><br><span class="line">  [![Windows Build][appveyor-image]][appveyor-url]</span><br><span class="line">  [![Test Coverage][coveralls-image]][coveralls-url]</span><br><span class="line"></span><br><span class="line"><span class="comment">## Install</span></span><br><span class="line"></span><br><span class="line">* npm</span><br><span class="line"></span><br><span class="line">  npm install pks-cli</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* yarn</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  yarn add pks-cli</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## Build</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># development</span></span><br><span class="line">npm run dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># publish</span></span><br><span class="line">npm run build</span><br><span class="line"></span><br><span class="line"><span class="comment">## License</span></span><br><span class="line"></span><br><span class="line">Copyright (c) 2017-present Alex Ceng</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[npm-image]: https://img.shields.io/npm/v/pks-cli.svg</span><br><span class="line">[npm-url]: https://npmjs.org/package/pks-cli</span><br><span class="line">[downloads-image]: https://img.shields.io/npm/dm/pks-cli.svg</span><br><span class="line">[downloads-url]: https://npmcharts.com/compare/pks-cli?minimal=<span class="literal">true</span></span><br><span class="line">[appveyor-url]: https://ci.appveyor.com/project/dougwilson/pks-cli</span><br><span class="line">[coveralls-image]: https://img.shields.io/coveralls/expressjs/pks-cli/master.svg</span><br><span class="line">[coveralls-url]: https://coveralls.io/r/expressjs/pks-cli?branch=master</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>最终的目录结构：</p>
+<pre class="hljs css"><code>└── <span class="hljs-selector-tag">pks-cli</span>
+    ├── <span class="hljs-selector-tag">README</span><span class="hljs-selector-class">.md</span>
+    ├── <span class="hljs-selector-tag">index</span><span class="hljs-selector-class">.js</span>
+    └── <span class="hljs-selector-tag">package</span><span class="hljs-selector-class">.json</span></code></pre>
+
+<h5 id="第二步：发布"><span class="post-title-index">1.2.1.2. </span><a href="#第二步：发布" class="headerlink" title="第二步：发布"></a>第二步：发布</h5><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm publish</span><br></pre></td></tr></tbody></table></figure>
+
+<p><i>此时，可能出现报错，可能出现的报错见<a href="#可能报错">报错分析</a></i></p>
+<p>以上问题解决后再次执行发布命令<code>npm publish</code>，发布成功</p>
+
+<h5 id="第三步：去npm-官网搜索"><span class="post-title-index">1.2.1.3. </span><a href="#第三步：去npm-官网搜索" class="headerlink" title="第三步：去npm 官网搜索"></a>第三步：去npm 官网搜索</h5><p>有可能有延迟，不能立马看不到。</p>
+<h4 id="2-发布scoped包"><span class="post-title-index">1.2.2. </span><a href="#2-发布scoped包" class="headerlink" title="2.发布scoped包"></a>2.发布scoped包</h4><p>@yuyy/babel</p>
+
+<h5><span class="post-title-index">1.2.2.1. </span><strong>第一步：创建项目</strong></h5>
+
+<p><strong>（1）创建工程文件夹</strong></p>
+
+<pre class="hljs perl"><code style="word-break: break-word; white-space: initial;"><span class="hljs-keyword">mkdir</span> babel &amp;&amp; cd babel</code></pre>
+
+<p><strong>（2）创建package.json </strong></p>
+
+<pre class="hljs swift"><code style="word-break: break-word; white-space: initial;">npm <span class="hljs-keyword">init</span></code></pre>
+
+<p>按提示操作，最终结果：</p>
+
+<pre class="hljs json"><code>{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"babel"</span>,
+  <span class="hljs-attr">"version"</span>: <span class="hljs-string">"1.0.0"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"my scoped test package"</span>,
+  <span class="hljs-attr">"main"</span>: <span class="hljs-string">"index.js"</span>,
+  <span class="hljs-attr">"scripts"</span>: {
+    <span class="hljs-attr">"test"</span>: <span class="hljs-string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>
+  },
+  <span class="hljs-attr">"keywords"</span>: [
+    <span class="hljs-string">"npm"</span>,
+    <span class="hljs-string">"package"</span>
+  ],
+  <span class="hljs-attr">"author"</span>: <span class="hljs-string">"yuyy"</span>,
+  <span class="hljs-attr">"license"</span>: <span class="hljs-string">"ISC"</span>
+}</code></pre>
+
+<p><strong>（3）创建README.md</strong><br>内容：</p>
+
+<pre class="hljs kotlin"><code>### <span class="hljs-meta">@yuyy</span>/babel
+
+This <span class="hljs-keyword">is</span> my scoped npm <span class="hljs-keyword">package</span>!
+
+It <span class="hljs-keyword">is</span> just <span class="hljs-keyword">for</span> learn.</code></pre>
+<p><strong>（4）创建index.js</strong><br>内容：</p>
+<pre class="hljs javascript"><code><span class="hljs-built_in">module</span>.exports = {
+    <span class="hljs-attr">printMsg</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'this message is from @yuyy/babel!'</span>);
+    }
+}</code></pre>
+<p>最终的目录结构：</p>
+<pre class="hljs css"><code>└── <span class="hljs-selector-tag">babel</span>
+    ├── <span class="hljs-selector-tag">README</span><span class="hljs-selector-class">.md</span>
+    ├── <span class="hljs-selector-tag">index</span><span class="hljs-selector-class">.js</span>
+    └── <span class="hljs-selector-tag">package</span><span class="hljs-selector-class">.json</span></code></pre>
+
+<h5><span class="post-title-index">1.2.2.2. </span><strong>第二步：发布</strong></h5>
+
+<pre class="hljs nginx"><code style="word-break: break-word; white-space: initial;"><span class="hljs-attribute">npm</span> publish</code></pre>
+<p>报错：没有发布权限<br><code>npm ERR!</code> publish Failed PUT 401<br><code>npm ERR!</code> code E401<br><code>npm ERR!</code> This package requires that publishers enable TFA and provide an OTP to publish. For more info, visit: <a href="https://go.npm.me/2fa-guide" rel="nofollow noreferrer" target="_blank">https://go.npm.me/2fa-guide</a> : babel</p>
+<p>原因：已经存在babel包，而我又不是babel的发布者</p>
+<p>解决：包名和域名差不多，先到先得，如果我非要发布一个叫babel的包，只能给它加作用域放到我的命名空间下</p>
+<h5><span class="post-title-index">1.2.2.3. </span><strong>第三步：加作用域</strong></h5>
+<pre class="hljs kotlin"><code style="word-break: break-word; white-space: initial;">npm <span class="hljs-keyword">init</span> --scope=<span class="hljs-meta">@yuyy</span> -y</code></pre>
+<p>@符号后面的是你注册npm账户时的username，如果不记得可以通过<code>npm whoami</code>查询。<br>上面的命令其实是在重新生成package.json，只是会给包增加了作用域，执行完后package.json现在的内容：</p>
+<pre class="hljs json"><code>{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"@yuyy/babel"</span>,
+  <span class="hljs-attr">"version"</span>: <span class="hljs-string">"1.0.0"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"my scoped test package"</span>,
+  <span class="hljs-attr">"main"</span>: <span class="hljs-string">"index.js"</span>,
+  <span class="hljs-attr">"scripts"</span>: {
+    <span class="hljs-attr">"test"</span>: <span class="hljs-string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>
+  },
+  <span class="hljs-attr">"keywords"</span>: [
+    <span class="hljs-string">"npm"</span>,
+    <span class="hljs-string">"package"</span>
+  ],
+  <span class="hljs-attr">"author"</span>: <span class="hljs-string">"yuyy"</span>,
+  <span class="hljs-attr">"license"</span>: <span class="hljs-string">"ISC"</span>
+}</code></pre>
+<p>唯一的变化是name字段由原来的babel变成了@yuyy/babel。</p>
+<h5><span class="post-title-index">1.2.2.4. </span><strong>第四步：再次发布</strong></h5>
+<pre class="hljs nginx"><code style="word-break: break-word; white-space: initial;"><span class="hljs-attribute">npm</span> publish</code></pre>
+<p>报错：<br><code>npm ERR!</code> publish Failed PUT 402<br><code>npm ERR!</code> code E402<br><code>npm ERR!</code> You must sign up for private packages : @yuyy/babel</p>
+<p>原因：</p>
+<ul>
+<li>
+<code>npm publish</code> 命令执行，默认是进行私有发布，参见<a href="https://docs.npmjs.com/cli/publish.html" rel="nofollow noreferrer" target="_blank">官网publish命令</a>
+</li>
+</ul>
+<p>解决：如果不想花钱，那只能将包面向公共发布，这也符合npm鼓励开源的精神，这一点和GitHub创建仓库类似。</p>
+<h5><span class="post-title-index">1.2.2.5. </span><strong>第五步：公共发布</strong></h5>
+<pre class="hljs swift"><code style="word-break: break-word; white-space: initial;">npm publish --access <span class="hljs-keyword">public</span></code></pre>
+<p>值得注意的一点：我们的项目名是babel，最终发布的包名是@yuyy/babel，可见<strong>发布的包名可以和项目名不一致，包名取决于package.json中的name字段。</strong></p>
+<h5><span class="post-title-index">1.2.2.6. </span><strong>第六步：npm官网搜索</strong></h5>
+
+<h2 id="可能报错"><span class="post-title-index">2. </span><a href="#可能报错" class="headerlink" title="可能报错"></a>可能报错</h2><h4 id="错误代码404"><span class="post-title-index">1.2.3. </span><a href="#错误代码404" class="headerlink" title="错误代码404"></a>错误代码404</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ERR! code E404</span><br><span class="line">npm ERR! 404 Not Found - PUT https://npm.pkg.github.com/xxxxx</span><br><span class="line">npm ERR! 404</span><br><span class="line">npm ERR! 404  <span class="string">'xxxxx@1.0.0'</span> is not <span class="keyword">in</span> the npm registry.</span><br><span class="line">npm ERR! 404 You should bug the author to publish it (or use the name yourself!)</span><br><span class="line">npm ERR! 404</span><br><span class="line">npm ERR! 404 Note that you can also install from a</span><br><span class="line">npm ERR! 404 tarball, folder, http url, or git url</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><p>错误原因一</p>
+<p>可能原因：未登录npm账户</p>
+<p>解决办法： 登录npm账户</p>
+<p>输入<code>npm adduser</code></p>
+<ul>
+<li>用户名</li>
+<li>密码</li>
+<li>email邮箱</li>
+</ul>
+</li>
+<li><p>错误原因二</p>
+<p>可能原因：登录账户以后，才运行<code>nrm use npm</code>切换到npm来源。npm来源切换以后，以前的登录不生效，账户需要在<code>nrm use npm</code>执行以后进行登录</p>
+<p>解决办法：登录npm账户</p>
+<p>输入<code>npm adduser</code></p>
+<ul>
+<li>用户名</li>
+<li>密码</li>
+<li>email邮箱</li>
+</ul>
+</li>
+</ul>
+<h4 id="错误代码ENEEDAUTH"><span class="post-title-index">1.2.4. </span><a href="#错误代码ENEEDAUTH" class="headerlink" title="错误代码ENEEDAUTH"></a>错误代码ENEEDAUTH</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm ERR! code ENEEDAUTH</span><br><span class="line">npm ERR! need auth auth required <span class="keyword">for</span> publishing</span><br><span class="line">npm ERR! need auth You need to authorize this machine using npm adduser</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><p>错误原因：未登录npm账户</p>
+<p> 解决办法： 登录npm账户</p>
+<p> 输入<code>npm adduser</code></p>
+<ul>
+<li>用户名</li>
+<li>密码</li>
+<li>email邮箱</li>
+</ul>
+</li>
+</ul>
+<h6 id="可能原因"><span class="post-title-index">1.2.2.6.1. </span><a href="#可能原因" class="headerlink" title="可能原因"></a>可能原因</h6><ul>
+<li><p>未登录npm账号</p>
+<p>处理方法：登录账号</p>
+</li>
+<li><p>已经登录账号</p>
+<ul>
+<li>登录账号以后，运行<code>nrm use npm</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="错误代码403"><span class="post-title-index">1.2.5. </span><a href="#错误代码403" class="headerlink" title="错误代码403"></a>错误代码403</h4><h4 id="报错代码"><span class="post-title-index">1.2.6. </span><a href="#报错代码" class="headerlink" title="报错代码"></a>报错代码</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm ERR! code E403</span><br><span class="line">npm ERR! 403 403 Forbidden - GET xxxxxxx</span><br><span class="line">npm ERR! 403 In most cases, you or one of your dependencies are requesting</span><br><span class="line">npm ERR! 403 a package version that is forbidden by your security policy.</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><p>可能原因： 新注册用户，没有验证邮箱</p>
+<p>处理办法：前往邮箱进行账号验证</p>
+</li>
+</ul>
+<blockquote>
+<p>编后语：<br>文章是亲自从注册到安装，一步一步的调试过的，网络上很多类似的文章，就不赘述了。这里主要说一点就是发布的时候，可能有一系列的报错，主要包括“注册以后没验证邮箱、切换了npm来源没有重新登录账号”，希望以后的小伙伴看到这个文章，能注意一下<br>文章参考来源：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000017463371">https://segmentfault.com/a/1190000017463371</a></p>
+</blockquote>
+</body></html>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/blog/tags/webpack/" rel="tag"><i class="fa fa-tag"></i> webpack</a>
+              <a href="/blog/tags/npm/" rel="tag"><i class="fa fa-tag"></i> npm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2020/12/28/science/others/version-management/" rel="prev" title="版本号管理">
+      <i class="fa fa-chevron-left"></i> 版本号管理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2020/12/10/science/javascript/regex/" rel="next" title="Regex">
+      Regex <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">1. 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">1.1. 一、准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%86%8Cnpm%E8%B4%A6%E6%88%B7"><span class="nav-text">1.1.1. 注册npm账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%AE%89%E8%A3%85nrm"><span class="nav-text">1.1.2. 全局安装nrm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8F%91%E5%B8%83%E5%8C%85"><span class="nav-text">1.2. 二、发布包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E5%B8%83unscoped%E5%8C%85"><span class="nav-text">1.2.1. 发布unscoped包</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-text">1.2.1.1. 第一步：创建项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%8F%91%E5%B8%83"><span class="nav-text">1.2.1.2. 第二步：发布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%8E%BBnpm-%E5%AE%98%E7%BD%91%E6%90%9C%E7%B4%A2"><span class="nav-text">1.2.1.3. 第三步：去npm 官网搜索</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8F%91%E5%B8%83scoped%E5%8C%85"><span class="nav-text">1.2.2. 2.发布scoped包</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.2.1. 第一步：创建项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.2.2. 第二步：发布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.2.3. 第三步：加作用域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.2.4. 第四步：再次发布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.2.5. 第五步：公共发布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.2.6. 第六步：npm官网搜索</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E6%8A%A5%E9%94%99"><span class="nav-text">2. 可能报错</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%BB%A3%E7%A0%81404"><span class="nav-text">1.2.3. 错误代码404</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%BB%A3%E7%A0%81ENEEDAUTH"><span class="nav-text">1.2.4. 错误代码ENEEDAUTH</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0"><span class="nav-text">1.2.2.6.1. 可能原因</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%BB%A3%E7%A0%81403"><span class="nav-text">1.2.5. 错误代码403</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E4%BB%A3%E7%A0%81"><span class="nav-text">1.2.6. 报错代码</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Alex ceng"
+      src="/blog/images/avatar.gif?imageView2/1/w/80/h/80">
+  <p class="site-author-name" itemprop="name">Alex ceng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bujidao</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/muse.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/blog/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"https://cdn.jsdelivr.net/npm/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":1}});</script></body>
+</html>

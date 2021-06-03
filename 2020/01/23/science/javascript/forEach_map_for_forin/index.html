@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bujidao.github.io","root":"/blog/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文主要讨论js中几种循环的方式以及特点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="forEach、map、for、forin的区别">
+<meta property="og:url" content="https://bujidao.github.io/blog/2020/01/23/science/javascript/forEach_map_for_forin/index.html">
+<meta property="og:site_name" content="Bujidao&#39;s Blog">
+<meta property="og:description" content="本文主要讨论js中几种循环的方式以及特点">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-03T04:08:21.738Z">
+<meta property="article:author" content="Alex ceng">
+<meta property="article:tag" content="foreach">
+<meta property="article:tag" content="map">
+<meta property="article:tag" content="for">
+<meta property="article:tag" content="forin">
+<meta property="article:tag" content="forof">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bujidao.github.io/blog/2020/01/23/science/javascript/forEach_map_for_forin/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>forEach、map、for、forin的区别 | Bujidao's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Bujidao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">安装、教程及经验分享</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bujidao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home-post-item" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bujidao.github.io/blog/2020/01/23/science/javascript/forEach_map_for_forin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.gif?imageView2/1/w/80/h/80">
+      <meta itemprop="name" content="Alex ceng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bujidao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          forEach、map、for、forin的区别
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-23 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-23T00:00:00+00:00">2020-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-03 04:08:21" itemprop="dateModified" datetime="2021-06-03T04:08:21+00:00">2021-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <html><head></head><body><p>本文主要讨论js中几种循环的方式以及特点</p>
+<span id="more"></span>
+<p>测试中用到的数据</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">23</span>, <span class="number">5</span>, <span class="number">12</span>, <span class="number">7245</span>, <span class="number">1235</span>, <span class="number">7</span>, <span class="number">13</span>]</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="函数用法"><span class="post-title-index">1. </span><a href="#函数用法" class="headerlink" title="函数用法"></a>函数用法</h2><h3 id="一般循环"><span class="post-title-index">1.1. </span><a href="#一般循环" class="headerlink" title="一般循环"></a>一般循环</h3><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'element1'</span>, <span class="string">'element2'</span>, <span class="string">'element3'</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) {</span><br><span class="line">    <span class="built_in">console</span>.log(arr[i]);</span><br><span class="line">}</span><br><span class="line"><span class="comment">// element1</span></span><br><span class="line"><span class="comment">// element2</span></span><br><span class="line"><span class="comment">// element3</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>这是一段标准的for循环代码，通过变量i去追踪数组arr的索引，达到访问数组中每一位元素的目的。<br>但不得不说，这是非常原始的一种方法，存在着几个显著缺点：</p>
+<ol>
+<li>无法只关注元素本身，需要花费精力去维护变量i以及边界len；</li>
+<li>当存在着多重嵌套时，将需要跟踪维护多个变量i，代码会非常复杂；</li>
+<li>需要花费精力去处理越界问题，一些编译型语言在遇到数组索引越界时会报错，而JavaScript引擎将不会告诉你任何错误信息，错误定位成本会比较高。</li>
+</ol>
+<h3 id="forEach循环"><span class="post-title-index">1.2. </span><a href="#forEach循环" class="headerlink" title="forEach循环"></a>forEach循环</h3><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'element1'</span>, <span class="string">'element2'</span>, <span class="string">'element3'</span>];</span><br><span class="line"></span><br><span class="line">arr.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">value, index, arr</span>) </span>{</span><br><span class="line">    <span class="built_in">console</span>.log(value);</span><br><span class="line">});</span><br><span class="line"></span><br><span class="line"><span class="comment">// element1</span></span><br><span class="line"><span class="comment">// element2</span></span><br><span class="line"><span class="comment">// element3</span></span><br></pre></td></tr></tbody></table></figure>
+<p>一切看起来都是那样的完美，即不需要花费精力去追踪索引，又无需担心越界问题，简直美滋滋。But，如果遍历到某个特定条件想退出咋整？</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'element1'</span>, <span class="string">'element2'</span>, <span class="string">'element3'</span>];</span><br><span class="line"></span><br><span class="line">arr.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">value, index, arr</span>) </span>{</span><br><span class="line">  <span class="keyword">if</span> (index === <span class="number">1</span>) {</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  } <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">console</span>.log(value);</span><br><span class="line">  }</span><br><span class="line">});</span><br><span class="line"></span><br><span class="line"><span class="comment">// Uncaught SyntaxError: Illegal break statement</span></span><br></pre></td></tr></tbody></table></figure>
+<p>比较遗憾的是以上的代码未能按照我们的预期运行（break、continue等语句跨越了函数边界），所以这个看似完美的办法实际上只能<strong>一条道走到黑</strong>，像吃了炫迈一样根本停不下来。当数组很大，没办法通过提前终止遍历来节省资源。</p>
+<h3 id="for-in-循环"><span class="post-title-index">1.3. </span><a href="#for-in-循环" class="headerlink" title="for in 循环"></a>for in 循环</h3><p>饭要一口一口的吃（饭桶请忽略），我们可以先解决花费时间防止数组越界的问题，例如可以使用for in循环：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'element1'</span>, <span class="string">'element2'</span>, <span class="string">'element3'</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> arr) {</span><br><span class="line">    <span class="built_in">console</span>.log(arr[i]);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// element1</span></span><br><span class="line"><span class="comment">// element2</span></span><br><span class="line"><span class="comment">// element3</span></span><br></pre></td></tr></tbody></table></figure>
+<p>for in语句是一种精准的迭代语句，可以枚举对象的所有可枚举属性(可以使用Object.getOwnPropertyDescriptor(targetObj, attrName)方法来查看对象的某个属性是否可枚举)。It means that，可以用它来遍历对象：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = {</span><br><span class="line">  <span class="attr">a</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">b</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">c</span>: <span class="number">1</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> attr <span class="keyword">in</span> obj) {</span><br><span class="line">  <span class="built_in">console</span>.log(attr, obj[attr]);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a 1</span></span><br><span class="line"><span class="comment">// b 1</span></span><br><span class="line"><span class="comment">// c 1</span></span><br></pre></td></tr></tbody></table></figure>
+<p>除了遍历对象、数组之外，for in循环还可兼职遍历字符串：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'I am a handsome boy!'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> str) {</span><br><span class="line">  <span class="built_in">console</span>.log(str[i]);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 太帅(chang)了，结果就不打印了</span></span><br></pre></td></tr></tbody></table></figure>
+<p>当然，也支持break、continue的操作，例子我就不写了。</p>
+<p>这玩意看起来非常的牛*，简直就是万能的。But，一般看上去什么都会的人，实际上什么都做不精（我就不一样了，我不仅看上去什么都不会，还做不好），这个玩意也是一样的，看看例子：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> father = {</span><br><span class="line">    <span class="attr">fatherAttr</span>: <span class="number">1</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">// 以father为原型创建对象实例instance</span></span><br><span class="line"><span class="keyword">var</span> instance = <span class="built_in">Object</span>.create(father);</span><br><span class="line"></span><br><span class="line">instance.a = <span class="number">1</span>;</span><br><span class="line">instance.b = <span class="number">1</span>;</span><br><span class="line">instance.c = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> attr <span class="keyword">in</span> instance) {</span><br><span class="line">    <span class="built_in">console</span>.log(attr, instance[attr]);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a 1</span></span><br><span class="line"><span class="comment">// b 1</span></span><br><span class="line"><span class="comment">// c 1</span></span><br><span class="line"><span class="comment">// fatherAttr 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取instance实例的自有属性名</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(instance));</span><br><span class="line"></span><br><span class="line"><span class="comment">// ["a", "b", "c"]</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>上面这个例子中，首先以father对象为原型创建了一个对象实例instance，然后为这个实例instance添加了a、b、c三个属性，接着使用for in循环遍历这个对象。通过查看instance的自有属性可以发现，fatherAttr并不是instance的属性，而是其原型father的属性，for in循环会将对象的原型属性也一并列举出来。故使用此方法去遍历对象属性的时候，需要加多一层判断：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> attr <span class="keyword">in</span> obj) {</span><br><span class="line">    <span class="keyword">if</span> (obj.hasOwnProperty(attr)) {</span><br><span class="line">        <span class="comment">// 是对象的自有属性，可以尽情的玩耍了</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>for in循环枚举原型属性这个弊端，在操作数组上也是有同样的问题，但是一般情况下，使用它遍历数组还是比较保险的；毕竟数组的原型是JavaScript内建对象Array，Array对象的默认属性都是不可枚举的；但如果你连Array对象都敢修改的话，这个小小的bug对你来说也不是事了。<br>不得不说，for in循环还是比较普遍使用的遍历对象的方法，这主要得益于其兼容性。当然，遍历对象还有其他的方法，稍迟再讲。我们继续审判for in循环：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'a𠮷c'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> index <span class="keyword">in</span> str) {</span><br><span class="line">    <span class="built_in">console</span>.log(str[index]);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// 无法用言语描述的字符</span></span><br><span class="line"><span class="comment">// 无法用言语描述的字符</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>ES5及之前处理字符串时，是以16位编码单位为基础的；16位编码显然无法给世界上所有的字符编码，所以某些字符就需要使用32位进行编码了，例如’𠮷‘字。<br>所以上面的例子出现打印四个字符的结果就不难理解了。按照道理来说，这不应该是for in循环的锅，但是有些时候就是不想讲道理。<br>虽然es6处理字符串强制使用UTF-16字符串来解决上述的问题（下面会有相关的例子），但for in循环依旧会存在上述的问题</p>
+<h3 id="for-of循环"><span class="post-title-index">1.4. </span><a href="#for-of循环" class="headerlink" title="for of循环"></a>for of循环</h3><p>通过for in循环可以解决传统for循环需要维护边界的问题，但也引入了一些新问题，跟搬砖工作者的日常操作“解决3个bug，引入8个新bug”场景极度相似。</p>
+<p>所以换个es6定义的for of循环操作试试：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">'a 𠮷 c'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> char <span class="keyword">of</span> str) {</span><br><span class="line">    <span class="keyword">if</span> (char === <span class="string">' '</span>) {</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="built_in">console</span>.log(char);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// 𠮷</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>从上面的例子来看，效果简直是perfect：索引去掉了，边界去掉了，想继续就继续，想退出就退出，还能顺便解决一下字符串的编码问题。<br>for of循环是一种依赖对象迭代器（迭代器的相关内容放在下一篇）的遍历方法，每一次执行都会执行迭代器的next方法，返回正确的值。通过for of循环，无需花费精力去追踪复杂的条件，降低了出错的概率。<br>根据先褒后贬的套路，接下来看看其一些限制性：</p>
+<ul>
+<li>运行环境为ES6及以上版本，所以兼容性没有for in循环以及传统的操作好，如果需要考虑兼容上世纪的浏览器，就不能使用这个东西</li>
+<li>只能用于遍历可迭代对象，即存在生成器方法（用于产生迭代器）的对象，如果用于遍历不可迭代对象，分分钟报错没商量。可以通过检测对象的Symbol.iterator方法（相关内容将放在下一篇）是否为函数来判断对象是否可迭代。</li>
+</ul>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断其Symbol.iterator属性是否为函数</span></span><br><span class="line"><span class="keyword">if</span> ((<span class="keyword">typeof</span> arr[<span class="built_in">Symbol</span>.iterator]).toUpperCase() === <span class="string">'FUNCTION'</span>) {</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> element <span class="keyword">of</span> arr) {</span><br><span class="line">        <span class="built_in">console</span>.log(element);</span><br><span class="line">    }</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'此对象不可迭代'</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>实际上，大多数JavaScript的内置对象都支持迭代，例如：Array、Set、Map、String等，当使用for of循环遍历上述对象时，会使用其默认的生成器生成的迭代器：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>([[<span class="string">'a'</span>, <span class="number">1</span>], [<span class="string">'b'</span>, <span class="number">1</span>], [<span class="string">'c'</span>, <span class="number">1</span>], [<span class="string">'d'</span>, <span class="number">1</span>]]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正经操作</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> map) {</span><br><span class="line">    <span class="built_in">console</span>.log(item);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// ["a", 1]</span></span><br><span class="line"><span class="comment">// ["b", 1]</span></span><br><span class="line"><span class="comment">// ["c", 1]</span></span><br><span class="line"><span class="comment">// ["d", 1]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用解构，方便读取值</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> [key, value] <span class="keyword">of</span> map) {</span><br><span class="line">    <span class="built_in">console</span>.log(key, value);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a 1</span></span><br><span class="line"><span class="comment">// b 1</span></span><br><span class="line"><span class="comment">// c 1</span></span><br><span class="line"><span class="comment">// d 1</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>上面的例子使用了for of遍历了Map类型实例map，迭代对象为Map类型的默认生成器生成的迭代器。当然，像Array、Set、Map类型还提供了一些特殊的生成器，可以让搬砖工作者更方便的去处理其想关注的内容：</p>
+<ul>
+<li>entries() 返回一个迭代器，其返回值为键值对数组（Map集合的默认迭代器；对于Set集合，返回值数组的元素相同，即value）</li>
+</ul>
+<ul>
+<li>keys() 返回一个迭代器，其返回值为集合的键名（对于Set集合，此迭代器跟values迭代器返回值相同;对于数组，此迭代器返回值为索引）</li>
+</ul>
+<ul>
+<li>values() 返回一个迭代器，其返回值为集合的值（Array、Set集合的默认迭代器）</li>
+</ul>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>]</span><br><span class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span>(arr);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> set.entries()) {</span><br><span class="line">    <span class="built_in">console</span>.log(item);</span><br><span class="line">}</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> arr.entries()) {</span><br><span class="line">    <span class="built_in">console</span>.log(item);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// ["a", "a"]</span></span><br><span class="line"><span class="comment">// ["b", "b"]</span></span><br><span class="line"><span class="comment">// ["c", "c"]</span></span><br><span class="line"><span class="comment">// ["d", "d"]</span></span><br><span class="line"><span class="comment">// [0, "a"]</span></span><br><span class="line"><span class="comment">// [1, "b"]</span></span><br><span class="line"><span class="comment">// [2, "c"]</span></span><br><span class="line"><span class="comment">// [3, "d"]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> set.keys()) {</span><br><span class="line">    <span class="built_in">console</span>.log(item);</span><br><span class="line">}</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> arr.keys()) {</span><br><span class="line">    <span class="built_in">console</span>.log(item);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"><span class="comment">// d</span></span><br><span class="line"><span class="comment">// 0</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> set.values()) {</span><br><span class="line">    <span class="built_in">console</span>.log(item);</span><br><span class="line">}</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> arr.values()) {</span><br><span class="line">    <span class="built_in">console</span>.log(item);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"><span class="comment">// d</span></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"><span class="comment">// d</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>除了JavaScript的内置对象，一些DOM标准的类型如NodeList也可以使用for of循环进行遍历：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> containers = <span class="built_in">document</span>.querySelectorAll(<span class="string">'.container'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> node <span class="keyword">of</span> containers) {</span><br><span class="line">    <span class="comment">// 搞事情专用注释</span></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>很遗憾的是，for of循环居然不支持自定义对象的遍历（心中一万匹***奔腾而过……），所以如果不想使用for in循环遍历对象，只能转个弯了。</p>
+<h2 id="遍历对象的转弯操作"><span class="post-title-index">2. </span><a href="#遍历对象的转弯操作" class="headerlink" title="遍历对象的转弯操作"></a>遍历对象的转弯操作</h2><h3 id="Object-keys-获取键名数组"><span class="post-title-index">2.1. </span><a href="#Object-keys-获取键名数组" class="headerlink" title="Object.keys()获取键名数组"></a>Object.keys()获取键名数组</h3><p>使用Object.keys()可以获取到对象实例的所有可枚举属性，其返回值为一个数组，数组元素为对象的键名：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> father = {</span><br><span class="line">    <span class="attr">fatherAttr</span>: <span class="number">1</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">// 以father为原型创建对象实例instance</span></span><br><span class="line"><span class="keyword">let</span> instance = <span class="built_in">Object</span>.create(father);</span><br><span class="line"></span><br><span class="line">instance.a = <span class="number">1</span>;</span><br><span class="line">instance.b = <span class="number">1</span>;</span><br><span class="line">instance.c = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(instance, <span class="string">'d'</span>, {</span><br><span class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">value</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">});</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="built_in">Object</span>.keys(instance)) {</span><br><span class="line">    <span class="built_in">console</span>.log(key);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>从上面的例子中可以看出，Object.keys()方法并不会获取对象的原型属性以及自身不可枚举属性，这个是比较符合我们的需求的；并且，这个玩意是ES5的特性，兼容性还是比较好的，是笔者比较喜欢使用的方法。<br>当然，如果作死，往这个方法传入非对象参数(如字符串)，其在ES5环境和ES6环境的表现是不一样的：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.keys(<span class="string">'I am a handsome boy!'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// ES5 直接报错，但说不定是浏览器嫉妒我的帅气才会报错的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ES6 估计见多了大风大浪，没啥感觉了</span></span><br><span class="line"><span class="comment">// ["0", "1", "2", "3", "4", "5", ...]</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>另外，需要注意的一点，ES标准没有规定这个枚举顺序，也就是说此方法的返回值的顺序是不确定的（包括下面的各种方法），如果对顺序有要求，可以尽量使用map或者set集合进行操作。</p>
+<h3 id="Object-getOwnPropertyNames-获取键名数组"><span class="post-title-index">2.2. </span><a href="#Object-getOwnPropertyNames-获取键名数组" class="headerlink" title="Object.getOwnPropertyNames()获取键名数组"></a>Object.getOwnPropertyNames()获取键名数组</h3><p>此方法跟keys方法表现一样，所不同的是，其返回的数组包含了对象的不可枚举属性：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> father = {</span><br><span class="line">    <span class="attr">fatherAttr</span>: <span class="number">1</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance = <span class="built_in">Object</span>.create(father);</span><br><span class="line"></span><br><span class="line">instance.a = <span class="number">1</span>;</span><br><span class="line">instance.b = <span class="number">1</span>;</span><br><span class="line">instance.c = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(instance, <span class="string">'d'</span>, {</span><br><span class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">value</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">});</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="built_in">Object</span>.getOwnPropertyNames(instance)) {</span><br><span class="line">    <span class="built_in">console</span>.log(key);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"><span class="comment">// d</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>如果你还是想作死，试试传入一个字符串会发生什么事，可以自己去试试，然后评论区留下实验结果。</p>
+<h3 id="Object-entries-获取键值对数组"><span class="post-title-index">2.3. </span><a href="#Object-entries-获取键值对数组" class="headerlink" title="Object.entries()获取键值对数组"></a>Object.entries()获取键值对数组</h3><p>这个方法返回什么东西就无需多言了吧，看例子：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> father = {</span><br><span class="line">    <span class="attr">fatherAttr</span>: <span class="number">1</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance = <span class="built_in">Object</span>.create(father);</span><br><span class="line"></span><br><span class="line">instance.a = <span class="number">1</span>;</span><br><span class="line">instance.b = <span class="number">1</span>;</span><br><span class="line">instance.c = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(instance, <span class="string">'d'</span>, {</span><br><span class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">value</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">});</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="built_in">Object</span>.entries(instance)) {</span><br><span class="line">    <span class="built_in">console</span>.log(key);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// ["a", 1]</span></span><br><span class="line"><span class="comment">// ["b", 1]</span></span><br><span class="line"><span class="comment">// ["c", 1]</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>所以当使用一个对象初始化一个Map实例时，可以使用这个方法：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = { <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">1</span> },</span><br><span class="line">    map = <span class="keyword">new</span> <span class="built_in">Map</span>(<span class="built_in">Object</span>.entries(obj));</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(map.get(<span class="string">'a'</span>));</span><br><span class="line"><span class="built_in">console</span>.log(map.get(<span class="string">'b'</span>));</span><br><span class="line"><span class="built_in">console</span>.log(map.get(<span class="string">'c'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Object-values-获取对象的属性值数组"><span class="post-title-index">2.4. </span><a href="#Object-values-获取对象的属性值数组" class="headerlink" title="Object.values()获取对象的属性值数组"></a>Object.values()获取对象的属性值数组</h3><h3 id="Object-getOwnPropertySymbols-获取Symbol属性名"><span class="post-title-index">2.5. </span><a href="#Object-getOwnPropertySymbols-获取Symbol属性名" class="headerlink" title="Object.getOwnPropertySymbols()获取Symbol属性名"></a>Object.getOwnPropertySymbols()获取Symbol属性名</h3><p>上面提到的几个方法都无法获取到对象实例的Symbol类型的属性名，如果需要遍历这个玩意，需要使用Object.getOwnPropertySymbols()方法：</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> father = {</span><br><span class="line">    <span class="attr">fatherAttr</span>: <span class="number">1</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance = <span class="built_in">Object</span>.create(father);</span><br><span class="line"></span><br><span class="line">instance.a = <span class="number">1</span>;</span><br><span class="line">instance.b = <span class="number">1</span>;</span><br><span class="line">instance.c = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">instance[<span class="built_in">Symbol</span>(<span class="string">'I am a handsome boy!'</span>)] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="built_in">Object</span>.keys(instance)) {</span><br><span class="line">    <span class="built_in">console</span>.log(key);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b</span></span><br><span class="line"><span class="comment">// c</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="built_in">Object</span>.getOwnPropertySymbols(instance)) {</span><br><span class="line">    <span class="built_in">console</span>.log(key);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Symbol(I am a handsome boy!)</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>上面列举了一些遍历的方法，一般可以满足日常的工作需要。但是上面都是ES内置的方法，不能定制化。在这个个性张扬的时代，如果你想搞点特殊，可以自定义一个迭代器；通过一些封装，甚至可以使用for of循环枚举对象。</p>
+<h2 id="其他"><span class="post-title-index">3. </span><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="map-amp-foreach"><span class="post-title-index">3.1. </span><a href="#map-amp-foreach" class="headerlink" title="map &amp; foreach"></a>map &amp; foreach</h3><p>map 创建一个新数组， 并且可以对旧数组进行处理后，返回新数组</p>
+<p>foreach 可以对数组进行一次循环， 但是总是返回为underfine，可以理解为没有返回</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line"><span class="keyword">var</span> x = array1.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">value,index</span>)</span>{</span><br><span class="line">  <span class="built_in">console</span>.log(value);   <span class="comment">//可遍历到所有数组元素</span></span><br><span class="line">  <span class="keyword">return</span> value + <span class="number">10</span></span><br><span class="line">});</span><br><span class="line"><span class="built_in">console</span>.log(x);   <span class="comment">//undefined    无论怎样，总返回undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> y = array1.map(<span class="function"><span class="keyword">function</span>(<span class="params">value,index</span>)</span>{</span><br><span class="line">  <span class="built_in">console</span>.log(value);   <span class="comment">//可遍历到所有数组元素</span></span><br><span class="line">  <span class="keyword">return</span> value + <span class="number">10</span></span><br><span class="line">});</span><br><span class="line"><span class="built_in">console</span>.log(y);   <span class="comment">//[11, 12, 13, 14, 15]   返回一个新的数组</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="参考"><span class="post-title-index">4. </span><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p> JavaScript骚操作之遍历、枚举与迭代:<a target="_blank" rel="noopener" href="https://juejin.im/post/5bfbbe2df265da61407e95a3">https://juejin.im/post/5bfbbe2df265da61407e95a3</a></p>
+</blockquote>
+</body></html>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/blog/tags/foreach/" rel="tag"><i class="fa fa-tag"></i> foreach</a>
+              <a href="/blog/tags/map/" rel="tag"><i class="fa fa-tag"></i> map</a>
+              <a href="/blog/tags/for/" rel="tag"><i class="fa fa-tag"></i> for</a>
+              <a href="/blog/tags/forin/" rel="tag"><i class="fa fa-tag"></i> forin</a>
+              <a href="/blog/tags/forof/" rel="tag"><i class="fa fa-tag"></i> forof</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2020/02/29/science/tensorflow/numpy/" rel="prev" title="Numpy">
+      <i class="fa fa-chevron-left"></i> Numpy
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2019/10/02/science/python/matplotlib/" rel="next" title="Matplotlib">
+      Matplotlib <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%94%A8%E6%B3%95"><span class="nav-text">1. 函数用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E5%BE%AA%E7%8E%AF"><span class="nav-text">1.1. 一般循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#forEach%E5%BE%AA%E7%8E%AF"><span class="nav-text">1.2. forEach循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for-in-%E5%BE%AA%E7%8E%AF"><span class="nav-text">1.3. for in 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for-of%E5%BE%AA%E7%8E%AF"><span class="nav-text">1.4. for of循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BD%AC%E5%BC%AF%E6%93%8D%E4%BD%9C"><span class="nav-text">2. 遍历对象的转弯操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-keys-%E8%8E%B7%E5%8F%96%E9%94%AE%E5%90%8D%E6%95%B0%E7%BB%84"><span class="nav-text">2.1. Object.keys()获取键名数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-getOwnPropertyNames-%E8%8E%B7%E5%8F%96%E9%94%AE%E5%90%8D%E6%95%B0%E7%BB%84"><span class="nav-text">2.2. Object.getOwnPropertyNames()获取键名数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-entries-%E8%8E%B7%E5%8F%96%E9%94%AE%E5%80%BC%E5%AF%B9%E6%95%B0%E7%BB%84"><span class="nav-text">2.3. Object.entries()获取键值对数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-values-%E8%8E%B7%E5%8F%96%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7%E5%80%BC%E6%95%B0%E7%BB%84"><span class="nav-text">2.4. Object.values()获取对象的属性值数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-getOwnPropertySymbols-%E8%8E%B7%E5%8F%96Symbol%E5%B1%9E%E6%80%A7%E5%90%8D"><span class="nav-text">2.5. Object.getOwnPropertySymbols()获取Symbol属性名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-text">3. 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#map-amp-foreach"><span class="nav-text">3.1. map &amp; foreach</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">4. 参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Alex ceng"
+      src="/blog/images/avatar.gif?imageView2/1/w/80/h/80">
+  <p class="site-author-name" itemprop="name">Alex ceng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bujidao</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/muse.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/blog/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"https://cdn.jsdelivr.net/npm/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":1}});</script></body>
+</html>
